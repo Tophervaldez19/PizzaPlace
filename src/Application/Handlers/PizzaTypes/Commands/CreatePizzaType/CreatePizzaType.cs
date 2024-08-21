@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 using PizzaPlace.Application.Common.Interfaces;
 using PizzaPlace.Domain.Entities;
 
-namespace PizzaPlace.Application.Handlers.PizzaTypes.Commands;
+namespace PizzaPlace.Application.Handlers.PizzaTypes.Commands.CreatePizzaType;
 public class CreatePizzaTypeCommand : IRequest<Result>
 {
-    public string Id { get; set; } = String.Empty;
-    public string Name { get; set; } = String.Empty;
-    public string Category { get; set; } = String.Empty;
-    public string Ingredients { get; set; } = String.Empty;
+    public string Id { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
+    public string Category { get; set; } = string.Empty;
+    public string Ingredients { get; set; } = string.Empty;
 }
 
-public class CreatePizzaTypeCommandHandler(IApplicationDbContext context,IMapper mapper) : IRequestHandler<CreatePizzaTypeCommand, Result>
+public class CreatePizzaTypeCommandHandler(IApplicationDbContext context, IMapper mapper) : IRequestHandler<CreatePizzaTypeCommand, Result>
 {
     private readonly IApplicationDbContext _context = context;
     private readonly IMapper _mapper = mapper;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PizzaPlace.Application.Handlers.PizzaTypes.Commands;
+using PizzaPlace.Application.Handlers.PizzaTypes.Commands.CreatePizzaType;
 using PizzaPlace.Domain.Entities;
 
 namespace PizzaPlace.Application.Common.Mappings;
