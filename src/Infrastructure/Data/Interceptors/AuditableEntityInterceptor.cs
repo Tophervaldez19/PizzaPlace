@@ -37,19 +37,22 @@ public class AuditableEntityInterceptor : SaveChangesInterceptor
     {
         if (context == null) return;
 
-        foreach (var entry in context.ChangeTracker.Entries<BaseAuditableEntity>())
+        foreach (var entry in context.ChangeTracker.Entries())
         {
-            if (entry.State is EntityState.Added or EntityState.Modified || entry.HasChangedOwnedEntities())
+            if(entry.Entity is BaseAuditableEntity<object> auditableEntity)
             {
-                var utcNow = _dateTime.GetUtcNow();
-                if (entry.State == EntityState.Added)
+                if (entry.State is EntityState.Added or EntityState.Modified || entry.HasChangedOwnedEntities())
                 {
-                    entry.Entity.CreatedBy = _user.Id;
-                    entry.Entity.Created = utcNow;
-                } 
-                entry.Entity.LastModifiedBy = _user.Id;
-                entry.Entity.LastModified = utcNow;
-            }
+                    var utcNow = _dateTime.GetUtcNow();
+                    if (entry.State == EntityState.Added)
+                    {
+                        auditableEntity.CreatedBy = _user.Id;
+                        auditableEntity.Created = utcNow;
+                    }
+                    auditableEntity.LastModifiedBy = _user.Id;
+                    auditableEntity.LastModified = utcNow;
+                }
+            }            
         }
     }
 }
