@@ -39,18 +39,20 @@ public class AuditableEntityInterceptor : SaveChangesInterceptor
 
         foreach (var entry in context.ChangeTracker.Entries())
         {
-            if(entry.Entity is BaseAuditableEntity<object> auditableEntity)
+            var entityType = entry.Entity.GetType();
+
+            if(entityType.IsAssignableToGenericType(typeof(BaseAuditableEntity<>)))
             {
                 if (entry.State is EntityState.Added or EntityState.Modified || entry.HasChangedOwnedEntities())
                 {
                     var utcNow = _dateTime.GetUtcNow();
                     if (entry.State == EntityState.Added)
                     {
-                        auditableEntity.CreatedBy = _user.Id;
-                        auditableEntity.Created = utcNow;
+                        entityType.GetProperty("CreatedBy")?.SetValue(entry.Entity, _user.Id);
+                        entityType.GetProperty("Created")?.SetValue(entry.Entity, utcNow);
                     }
-                    auditableEntity.LastModifiedBy = _user.Id;
-                    auditableEntity.LastModified = utcNow;
+                    entityType.GetProperty("LastModifiedBy")?.SetValue(entry.Entity, _user.Id);
+                    entityType.GetProperty("LastModified")?.SetValue(entry.Entity, utcNow);
                 }
             }            
         }
@@ -64,4 +66,22 @@ public static class Extensions
             r.TargetEntry != null && 
             r.TargetEntry.Metadata.IsOwned() && 
             (r.TargetEntry.State == EntityState.Added || r.TargetEntry.State == EntityState.Modified));
+    public static bool IsAssignableToGenericType(this Type givenType, Type genericType)
+    {
+        var interfaceTypes = givenType.GetInterfaces();
+
+        foreach (var it in interfaceTypes)
+        {
+            if (it.IsGenericType && it.GetGenericTypeDefinition() == genericType)
+                return true;
+        }
+
+        if (givenType.IsGenericType && givenType.GetGenericTypeDefinition() == genericType)
+            return true;
+
+        Type? baseType = givenType.BaseType;
+        if (baseType == null) return false;
+
+        return IsAssignableToGenericType(baseType, genericType);
+    }
 }
