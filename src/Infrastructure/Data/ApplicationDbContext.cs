@@ -21,6 +21,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
 
     public DbSet<Order> Orders => Set<Order>();
 
+    public DbSet<OrderDetail> OrderDetails => Set<OrderDetail>();
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
