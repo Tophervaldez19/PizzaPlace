@@ -1,12 +1,12 @@
-﻿using PizzaPlace.Infrastructure.Identity;
+﻿//using PizzaPlace.Infrastructure.Identity;
 
-namespace PizzaPlace.Web.Endpoints;
+//namespace PizzaPlace.Web.Endpoints;
 
-public class Users : EndpointGroupBase
-{
-    public override void Map(WebApplication app)
-    {
-        app.MapGroup(this)
-            .MapIdentityApi<ApplicationUser>();
-    }
-}
+//public class Users : EndpointGroupBase
+//{
+//    public override void Map(WebApplication app)
+//    {
+//        app.MapGroup(this)
+//            .MapIdentityApi<ApplicationUser>();
+//    }
+//}

@@ -1,18 +1,18 @@
-﻿using PizzaPlace.Application.WeatherForecasts.Queries.GetWeatherForecasts;
+﻿//using PizzaPlace.Application.WeatherForecasts.Queries.GetWeatherForecasts;
 
-namespace PizzaPlace.Web.Endpoints;
+//namespace PizzaPlace.Web.Endpoints;
 
-public class WeatherForecasts : EndpointGroupBase
-{
-    public override void Map(WebApplication app)
-    {
-        app.MapGroup(this)
-            .RequireAuthorization()
-            .MapGet(GetWeatherForecasts);
-    }
+//public class WeatherForecasts : EndpointGroupBase
+//{
+//    public override void Map(WebApplication app)
+//    {
+//        app.MapGroup(this)
+//            .RequireAuthorization()
+//            .MapGet(GetWeatherForecasts);
+//    }
 
-    public async Task<IEnumerable<WeatherForecast>> GetWeatherForecasts(ISender sender)
-    {
-        return await sender.Send(new GetWeatherForecastsQuery());
-    }
-}
+//    public async Task<IEnumerable<WeatherForecast>> GetWeatherForecasts(ISender sender)
+//    {
+//        return await sender.Send(new GetWeatherForecastsQuery());
+//    }
+//}
