@@ -6,6 +6,186 @@
     "version": "1.0.0"
   },
   "paths": {
+    "/api/Pizzas": {
+      "get": {
+        "tags": [
+          "Pizzas"
+        ],
+        "operationId": "GetPizzas",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultOfListOfPizzaDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Pizzas"
+        ],
+        "operationId": "CreatePizza",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePizzaCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Pizzas/GetPizzaById/{id}": {
+      "get": {
+        "tags": [
+          "Pizzas"
+        ],
+        "operationId": "GetPizzaById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultOfPizzaDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Pizzas/UploadPizza": {
+      "post": {
+        "tags": [
+          "Pizzas"
+        ],
+        "operationId": "UploadPizza",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Pizzas/DeletePizza/{id}": {
+      "delete": {
+        "tags": [
+          "Pizzas"
+        ],
+        "operationId": "DeletePizza",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Pizzas/UpdatePizza": {
+      "put": {
+        "tags": [
+          "Pizzas"
+        ],
+        "operationId": "UpdatePizza",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePizzaCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/PizzaTypes": {
       "get": {
         "tags": [
@@ -937,7 +1117,7 @@
   },
   "components": {
     "schemas": {
-      "ResultOfListOfPizzaTypeDto": {
+      "ResultOfListOfPizzaDto": {
         "allOf": [
           {
             "$ref": "#/components/schemas/Result"
@@ -950,12 +1130,34 @@
                 "type": "array",
                 "nullable": true,
                 "items": {
-                  "$ref": "#/components/schemas/PizzaTypeDto"
+                  "$ref": "#/components/schemas/PizzaDto"
                 }
               }
             }
           }
         ]
+      },
+      "PizzaDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "pizzaTypeId": {
+            "type": "string"
+          },
+          "pizzaType": {
+            "$ref": "#/components/schemas/PizzaTypeDto"
+          },
+          "size": {
+            "$ref": "#/components/schemas/PizzaSize"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          }
+        }
       },
       "PizzaTypeDto": {
         "type": "object",
@@ -974,6 +1176,24 @@
             "type": "string"
           }
         }
+      },
+      "PizzaSize": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Small",
+          "Medium",
+          "Large",
+          "ExtraLarge",
+          "DoubleExtraLarge"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
       },
       "Result": {
         "type": "object",
@@ -1005,6 +1225,85 @@
             }
           }
         }
+      },
+      "ResultOfPizzaDto": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Result"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "data": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/PizzaDto"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "CreatePizzaCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "pizzaTypeId": {
+            "type": "string"
+          },
+          "size": {
+            "$ref": "#/components/schemas/PizzaSize"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "UpdatePizzaCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "pizzaTypeId": {
+            "type": "string"
+          },
+          "size": {
+            "$ref": "#/components/schemas/PizzaSize"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "ResultOfListOfPizzaTypeDto": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Result"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "data": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/PizzaTypeDto"
+                }
+              }
+            }
+          }
+        ]
       },
       "ResultOfPizzaTypeDto": {
         "allOf": [

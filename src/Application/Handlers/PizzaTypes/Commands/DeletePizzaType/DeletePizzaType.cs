@@ -13,7 +13,7 @@ public class DeletePizzaTypeCommand : IRequest<Result>
 
 
 public class DeletePizzaTypeCommandHandler(IApplicationDbContext context) : IRequestHandler<DeletePizzaTypeCommand, Result>
-{
+{   
     private readonly IApplicationDbContext _context = context;
     public async Task<Result> Handle(DeletePizzaTypeCommand request, CancellationToken cancellationToken)
     {
