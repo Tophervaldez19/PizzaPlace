@@ -7,6 +7,7 @@ using PizzaPlace.Application.Handlers.PizzaTypes.Commands.DeletePizzaType;
 using PizzaPlace.Application.Handlers.PizzaTypes.Commands.UpdatePizzaType;
 using PizzaPlace.Application.Handlers.PizzaTypes.Commands.UploadPizzaType;
 using PizzaPlace.Application.Handlers.PizzaTypes.Dtos;
+using PizzaPlace.Application.Handlers.PizzaTypes.Queries.GetPizzaTypeById;
 using PizzaPlace.Application.Handlers.PizzaTypes.Queries.GetPizzaTypes;
 using CsvParser = PizzaPlace.Application.Common.Helpers.CsvParser;
 namespace PizzaPlace.Web.Endpoints;
@@ -18,6 +19,7 @@ public class PizzaTypes : EndpointGroupBase
         app.MapGroup(this)
             .DisableAntiforgery() //Temporary disable antiforgery
             .MapGet(GetPizzaTypes)
+            .MapGet(GetPizzaTypeById, "GetPizzaTypeById/{id}")
             .MapPost(CreatePizzaType)
             .MapPost(UploadPizzaType, nameof(UploadPizzaType))
             .MapDelete(DeletePizzaType, "DeletePizzaType/{id}")
@@ -27,6 +29,11 @@ public class PizzaTypes : EndpointGroupBase
     public async Task<Result<List<PizzaTypeDto>>> GetPizzaTypes(ISender sender)
     {
         return await sender.Send(new GetPizzaTypesQuery());
+    }
+
+    public async Task<Result<PizzaTypeDto>> GetPizzaTypeById(ISender sender, string id)
+    {
+        return await sender.Send(new GetPizzaTypeByIdQuery() { Id = id });
     }
 
     public async Task<Result> CreatePizzaType(ISender sender, CreatePizzaTypeCommand command)

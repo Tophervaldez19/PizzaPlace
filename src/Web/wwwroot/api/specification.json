@@ -56,6 +56,37 @@
         }
       }
     },
+    "/api/PizzaTypes/GetPizzaTypeById/{id}": {
+      "get": {
+        "tags": [
+          "PizzaTypes"
+        ],
+        "operationId": "GetPizzaTypeById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultOfPizzaTypeDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/PizzaTypes/UploadPizzaType": {
       "post": {
         "tags": [
@@ -974,6 +1005,27 @@
             }
           }
         }
+      },
+      "ResultOfPizzaTypeDto": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Result"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "data": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/PizzaTypeDto"
+                  }
+                ]
+              }
+            }
+          }
+        ]
       },
       "CreatePizzaTypeCommand": {
         "type": "object",
