@@ -5,3 +5,5 @@ global using Microsoft.EntityFrameworkCore;
 global using FluentValidation;
 global using MediatR;
 global using PizzaPlace.Application.Common.Models;
+global using PizzaPlace.Domain.Entities;
+global using PizzaPlace.Application.Common.Helpers.CsvDtos;
