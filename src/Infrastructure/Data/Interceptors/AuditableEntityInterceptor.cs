@@ -37,19 +37,24 @@ public class AuditableEntityInterceptor : SaveChangesInterceptor
     {
         if (context == null) return;
 
-        foreach (var entry in context.ChangeTracker.Entries<BaseAuditableEntity>())
+        foreach (var entry in context.ChangeTracker.Entries())
         {
-            if (entry.State is EntityState.Added or EntityState.Modified || entry.HasChangedOwnedEntities())
+            var entityType = entry.Entity.GetType();
+
+            if(entityType.IsAssignableToGenericType(typeof(BaseAuditableEntity<>)))
             {
-                var utcNow = _dateTime.GetUtcNow();
-                if (entry.State == EntityState.Added)
+                if (entry.State is EntityState.Added or EntityState.Modified || entry.HasChangedOwnedEntities())
                 {
-                    entry.Entity.CreatedBy = _user.Id;
-                    entry.Entity.Created = utcNow;
-                } 
-                entry.Entity.LastModifiedBy = _user.Id;
-                entry.Entity.LastModified = utcNow;
-            }
+                    var utcNow = _dateTime.GetUtcNow();
+                    if (entry.State == EntityState.Added)
+                    {
+                        entityType.GetProperty("CreatedBy")?.SetValue(entry.Entity, _user.Id);
+                        entityType.GetProperty("Created")?.SetValue(entry.Entity, utcNow);
+                    }
+                    entityType.GetProperty("LastModifiedBy")?.SetValue(entry.Entity, _user.Id);
+                    entityType.GetProperty("LastModified")?.SetValue(entry.Entity, utcNow);
+                }
+            }            
         }
     }
 }
@@ -61,4 +66,22 @@ public static class Extensions
             r.TargetEntry != null && 
             r.TargetEntry.Metadata.IsOwned() && 
             (r.TargetEntry.State == EntityState.Added || r.TargetEntry.State == EntityState.Modified));
+    public static bool IsAssignableToGenericType(this Type givenType, Type genericType)
+    {
+        var interfaceTypes = givenType.GetInterfaces();
+
+        foreach (var it in interfaceTypes)
+        {
+            if (it.IsGenericType && it.GetGenericTypeDefinition() == genericType)
+                return true;
+        }
+
+        if (givenType.IsGenericType && givenType.GetGenericTypeDefinition() == genericType)
+            return true;
+
+        Type? baseType = givenType.BaseType;
+        if (baseType == null) return false;
+
+        return IsAssignableToGenericType(baseType, genericType);
+    }
 }
