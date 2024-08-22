@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PizzaPlace.Application.Handlers.PizzaTypes.Commands.CreatePizzaType;
+using PizzaPlace.Application.Handlers.PizzaTypes.Commands.UpdatePizzaType;
 using PizzaPlace.Domain.Entities;
 
 namespace PizzaPlace.Application.Common.Mappings;
@@ -12,6 +13,7 @@ public class AutoMapperProfile : Profile
     public AutoMapperProfile()
     {
         CreateBidirectionalMap<CreatePizzaTypeCommand, PizzaType>();
+        CreateBidirectionalMap<UpdatePizzaTypeCommand, PizzaType>();
         CreateBidirectionalMap<PizzaTypeCsvDto, PizzaType>();
     }
 
