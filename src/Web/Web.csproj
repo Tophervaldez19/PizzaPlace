@@ -26,10 +26,6 @@
     <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Filters\" />
-  </ItemGroup>
-
 
   <!-- Auto-generated Open API specification and Angular TypeScript clients -->
   <PropertyGroup>

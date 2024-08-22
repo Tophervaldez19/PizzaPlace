@@ -30,4 +30,14 @@ public static class CsvParser
 
         return csv.GetRecords<PizzaCsvDto>().ToList();
     }
+
+    public static List<OrderCsvDto> ParseOrderDtoFromCsv(Stream csvStream)
+    {
+        using var reader = new StreamReader(csvStream);
+        using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+
+        csv.Context.RegisterClassMap<OrderMapping>();
+
+        return csv.GetRecords<OrderCsvDto>().ToList();
+    }
 }

@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Handlers\Orders\Commands\NewFolder\" />
+    <Folder Include="Handlers\Orders\NewFolder\" />
   </ItemGroup>
 
 </Project>
