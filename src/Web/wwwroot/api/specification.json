@@ -7,6 +7,24 @@
   },
   "paths": {
     "/api/PizzaTypes": {
+      "get": {
+        "tags": [
+          "PizzaTypes"
+        ],
+        "operationId": "GetPizzaTypes",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultOfListOfPizzaTypeDto"
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "tags": [
           "PizzaTypes"
@@ -888,6 +906,44 @@
   },
   "components": {
     "schemas": {
+      "ResultOfListOfPizzaTypeDto": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Result"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "data": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/PizzaTypeDto"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "PizzaTypeDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "ingredients": {
+            "type": "string"
+          }
+        }
+      },
       "Result": {
         "type": "object",
         "additionalProperties": false,
