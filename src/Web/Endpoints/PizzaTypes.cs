@@ -1,20 +1,26 @@
-﻿using PizzaPlace.Application.Handlers.PizzaTypes.Commands.CreatePizzaType;
+﻿using CsvHelper;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PizzaPlace.Application.Common.Helpers;
+using PizzaPlace.Application.Handlers.PizzaTypes.Commands.CreatePizzaType;
 using PizzaPlace.Application.Handlers.PizzaTypes.Commands.DeletePizzaType;
-
+using PizzaPlace.Application.Handlers.PizzaTypes.Commands.UploadPizzaType;
+using CsvParser = PizzaPlace.Application.Common.Helpers.CsvParser;
 namespace PizzaPlace.Web.Endpoints;
 
-public class PizzaTypes :EndpointGroupBase
+public class PizzaTypes : EndpointGroupBase
 {
     public override void Map(WebApplication app)
     {
         app.MapGroup(this)
+            .DisableAntiforgery() //Temporary disable
             .MapPost(CreatePizzaType)
             .MapPost(UploadPizzaType, nameof(UploadPizzaType))
             .MapDelete(DeletePizzaType, "DeletePizzaType/{id}");
-            
+
     }
 
-    public async Task<Result> CreatePizzaType(ISender sender,CreatePizzaTypeCommand command)
+    public async Task<Result> CreatePizzaType(ISender sender, CreatePizzaTypeCommand command)
     {
         return await sender.Send(command);
     }
@@ -24,8 +30,23 @@ public class PizzaTypes :EndpointGroupBase
         return await sender.Send(new DeletePizzaTypeCommand() { Id = id });
     }
 
-    public Result UploadPizzaType(ISender sender,IFormFile file)
+    public async Task<Result> UploadPizzaType(ISender sender, IFormFile file)
     {
-        return Result.Success();
+        if (file == null || file.Length == 0)
+        {
+            return Result.Failure("No file uploaded.");
+        }
+
+        try
+        {
+            using var stream = file.OpenReadStream();
+            var pizzaTypeDtos = CsvParser.ParsePizzaTypeDtoFromCsv(stream);
+
+            return await sender.Send(new UploadPizzaTypeCommand() { PizzaTypes = pizzaTypeDtos });
+        }
+        catch (Exception ex)
+        {
+            return Result.Failure($"Error saving CSV data... {ex.InnerException!.Message}");
+        }
     }
 }

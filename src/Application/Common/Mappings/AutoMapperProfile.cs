@@ -12,6 +12,7 @@ public class AutoMapperProfile : Profile
     public AutoMapperProfile()
     {
         CreateBidirectionalMap<CreatePizzaTypeCommand, PizzaType>();
+        CreateBidirectionalMap<PizzaTypeCsvDto, PizzaType>();
     }
 
     private (IMappingExpression<T, T2> map1, IMappingExpression<T2, T> map2) CreateBidirectionalMap<T, T2>()
