@@ -17,6 +17,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
     
     public DbSet<PizzaType> PizzaTypes => Set<PizzaType>();
 
+    public DbSet<Pizza> Pizzas => Set<Pizza>();
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
