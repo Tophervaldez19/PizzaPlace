@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using CsvHelper.Configuration;
 
 namespace PizzaPlace.Application.Common.Helpers.CsvMappings;
-public class PizzaMapping : ClassMap<PizzaCsvDto>
+public class OrderDetailMapping : ClassMap<OrderDetailCsvDto>
 {
-    public PizzaMapping()
+    public OrderDetailMapping()
     {
         Map(x => x.Id)
-            .Name("pizza_id")
+            .Name("order_details_id")
             .Validate(field =>
             {
                 if (string.IsNullOrEmpty(field.Field))
@@ -19,37 +19,36 @@ public class PizzaMapping : ClassMap<PizzaCsvDto>
                 return true;
             });
 
-        Map(x => x.PizzaTypeId)
-            .Name("pizza_type_id")
+        Map(x => x.OrderId)
+            .Name("order_id")
             .Validate(field =>
             {
                 if (string.IsNullOrEmpty(field.Field))
-                    throw new Exception($"OrderId is required");
+                    throw new Exception($"order_id is required");
                 return true;
             });
 
-        Map(x => x.Size)
-            .Name("size")
+        Map(x=>x.PizzaId)
+            .Name("pizza_id")
             .Validate(field =>
             {
                 if (string.IsNullOrEmpty(field.Field))
-                    throw new Exception($"Size is required");
+                    throw new Exception($"pizza_id is required");
                 return true;
             });
 
-        Map(x => x.Price)
-            .Name("price")
+        Map(x => x.Quantity)
+            .Name("quantity")
             .Validate(field =>
             {
                 if (string.IsNullOrEmpty(field.Field))
-                    throw new Exception($"Price is required");
+                    throw new Exception($"quantity is required");
 
-                TryParseDouble("price", field.Field);
+                TryParseDouble("quantity", field.Field);
 
                 return true;
             });
     }
-
     private static void TryParseDouble(string fieldName, string fieldValue)
     {
         if (!string.IsNullOrEmpty(fieldValue) && !double.TryParse(fieldValue, out _))

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PizzaPlace.Application.Handlers.OrderDetails.Commands.CreateOrderDetail;
 using PizzaPlace.Application.Handlers.Orders.Commands.CreateOrder;
 using PizzaPlace.Application.Handlers.Orders.Commands.UpdateOrder;
 using PizzaPlace.Application.Handlers.Orders.Dtos;
@@ -40,6 +41,10 @@ public class AutoMapperProfile : Profile
         CreateBidirectionalMap<UpdateOrderCommand, Order>();
         CreateBidirectionalMap<OrderCsvDto, Order>();
         CreateBidirectionalMap<OrderDto, Order>();
+
+        // Order Detail
+        CreateBidirectionalMap<CreateOrderDetailCommand, OrderDetail>();
+        CreateBidirectionalMap<OrderDetailCsvDto, OrderDetail>();
     }
 
     private (IMappingExpression<T, T2> map1, IMappingExpression<T2, T> map2) CreateBidirectionalMap<T, T2>()
