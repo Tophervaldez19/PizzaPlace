@@ -20,4 +20,14 @@ public static class CsvParser
 
         return csv.GetRecords<PizzaTypeCsvDto>().ToList();
     }
+
+    public static List<PizzaCsvDto> ParsePizzaDtoFromCsv(Stream csvStream)
+    {
+        using var reader = new StreamReader(csvStream);
+        using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+
+        csv.Context.RegisterClassMap<PizzaMapping>();
+
+        return csv.GetRecords<PizzaCsvDto>().ToList();
+    }
 }
