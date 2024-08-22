@@ -12,5 +12,7 @@ public interface IApplicationDbContext
 
     DbSet<Pizza> Pizzas { get; }
 
+    DbSet<Order> Orders { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

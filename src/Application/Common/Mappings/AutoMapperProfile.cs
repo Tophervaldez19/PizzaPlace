@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PizzaPlace.Application.Handlers.Orders.Commands.CreateOrder;
+using PizzaPlace.Application.Handlers.Orders.Commands.UpdateOrder;
+using PizzaPlace.Application.Handlers.Orders.Dtos;
 using PizzaPlace.Application.Handlers.Pizzas.Commands.CreatePizza;
 using PizzaPlace.Application.Handlers.Pizzas.Commands.UpdatePizza;
 using PizzaPlace.Application.Handlers.Pizzas.Dtos;
@@ -31,6 +34,12 @@ public class AutoMapperProfile : Profile
         CreateMap<PizzaCsvDto, Pizza>()
             .ForMember(dest => dest.Size, opt => opt.MapFrom(src => MapPizzaSize(src.Size)))
             .ReverseMap();
+
+        // Orders
+        CreateBidirectionalMap<CreateOrderCommand, Order>();
+        CreateBidirectionalMap<UpdateOrderCommand, Order>();
+        CreateBidirectionalMap<OrderCsvDto, Order>();
+        CreateBidirectionalMap<OrderDto, Order>();
     }
 
     private (IMappingExpression<T, T2> map1, IMappingExpression<T2, T> map2) CreateBidirectionalMap<T, T2>()
