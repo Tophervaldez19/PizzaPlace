@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PizzaPlace.Domain.Entities;
-public class Pizza : BaseAuditableEntity<string>
+namespace PizzaPlace.Application.Common.Helpers.CsvDtos;
+public class PizzaCsvDto
 {
+    public string Id { get; set; } = String.Empty;
     public string PizzaTypeId { get; set; } = String.Empty;
-    public PizzaType PizzaType { get; set; } = default!;
-    public PizzaSize Size { get; set; }
+    public string Size { get; set; } = String.Empty;
     public double Price { get; set; }
 }

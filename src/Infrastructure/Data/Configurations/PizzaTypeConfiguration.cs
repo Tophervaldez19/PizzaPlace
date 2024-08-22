@@ -9,5 +9,10 @@ public class PizzaTypeConfiguration : IEntityTypeConfiguration<PizzaType>
     {
         builder.Property(x => x.Id)
             .ValueGeneratedNever();
+
+        builder.HasMany(x => x.Pizzas)
+            .WithOne(x => x.PizzaType)
+            .HasForeignKey(x => x.PizzaTypeId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
