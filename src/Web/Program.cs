@@ -1,5 +1,4 @@
 using PizzaPlace.Infrastructure.Data;
-using PizzaPlace.Web.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 

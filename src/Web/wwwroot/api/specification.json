@@ -105,6 +105,38 @@
         }
       }
     },
+    "/api/PizzaTypes/UpdatePizzaType": {
+      "put": {
+        "tags": [
+          "PizzaTypes"
+        ],
+        "operationId": "UpdatePizzaType",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePizzaTypeCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/TodoItems": {
       "get": {
         "tags": [
@@ -888,6 +920,24 @@
         }
       },
       "CreatePizzaTypeCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "ingredients": {
+            "type": "string"
+          }
+        }
+      },
+      "UpdatePizzaTypeCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {

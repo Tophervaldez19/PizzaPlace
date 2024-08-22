@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using PizzaPlace.Application.Common.Helpers;
 using PizzaPlace.Application.Handlers.PizzaTypes.Commands.CreatePizzaType;
 using PizzaPlace.Application.Handlers.PizzaTypes.Commands.DeletePizzaType;
+using PizzaPlace.Application.Handlers.PizzaTypes.Commands.UpdatePizzaType;
 using PizzaPlace.Application.Handlers.PizzaTypes.Commands.UploadPizzaType;
 using CsvParser = PizzaPlace.Application.Common.Helpers.CsvParser;
 namespace PizzaPlace.Web.Endpoints;
@@ -16,8 +17,8 @@ public class PizzaTypes : EndpointGroupBase
             .DisableAntiforgery() //Temporary disable
             .MapPost(CreatePizzaType)
             .MapPost(UploadPizzaType, nameof(UploadPizzaType))
-            .MapDelete(DeletePizzaType, "DeletePizzaType/{id}");
-
+            .MapDelete(DeletePizzaType, "DeletePizzaType/{id}")
+            .MapPut(UpdatePizzaType, "UpdatePizzaType");
     }
 
     public async Task<Result> CreatePizzaType(ISender sender, CreatePizzaTypeCommand command)
@@ -48,5 +49,10 @@ public class PizzaTypes : EndpointGroupBase
         {
             return Result.Failure($"Error saving CSV data... {ex.InnerException!.Message}");
         }
+    }
+
+    public async Task<Result> UpdatePizzaType(ISender sender, UpdatePizzaTypeCommand command)
+    {
+        return await sender.Send(command);
     }
 }
