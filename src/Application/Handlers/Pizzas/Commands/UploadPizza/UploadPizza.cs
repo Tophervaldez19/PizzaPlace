@@ -30,6 +30,7 @@ public class UploadPizzaCommandHandler(IApplicationDbContext context, IMapper ma
             if (!await PizzaTypeExist(pizza.PizzaTypeId))
             {
                 errors.Add($"Pizza Type Id:{pizza.PizzaTypeId} does not exists.");
+                break;
             }
 
             if (!await PizzaExist(pizza.Id) && !pizzaForInsert.Any(x => x.Id == pizza.Id))

@@ -24,7 +24,7 @@ public class OrderMapping : ClassMap<OrderCsvDto>
           .Validate(field =>
           {
               if (string.IsNullOrEmpty(field.Field))
-                  throw new Exception($"Id is required");
+                  throw new Exception($"date is required");
               return true;
           });
 
@@ -33,7 +33,7 @@ public class OrderMapping : ClassMap<OrderCsvDto>
           .Validate(field =>
           {
               if (string.IsNullOrEmpty(field.Field))
-                  throw new Exception($"Id is required");
+                  throw new Exception($"time is required");
               return true;
           });
     }

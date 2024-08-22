@@ -40,4 +40,14 @@ public static class CsvParser
 
         return csv.GetRecords<OrderCsvDto>().ToList();
     }
+
+    public static List<OrderDetailCsvDto> ParseOrderDetailDtoFromCsv(Stream csvStream)
+    {
+        using var reader = new StreamReader(csvStream);
+        using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+
+        csv.Context.RegisterClassMap<OrderDetailMapping>();
+
+        return csv.GetRecords<OrderDetailCsvDto>().ToList();
+    }
 }
