@@ -11,4 +11,6 @@ public class Pizza : BaseAuditableEntity<string>
     public PizzaType PizzaType { get; set; } = default!;
     public PizzaSize Size { get; set; }
     public double Price { get; set; }
+
+    public virtual List<OrderDetail> OrderDetails { get; set; } = new();
 }
